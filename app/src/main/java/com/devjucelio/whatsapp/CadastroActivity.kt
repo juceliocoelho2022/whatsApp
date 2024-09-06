@@ -17,6 +17,7 @@ class CadastroActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityCadastroBinding.inflate(layoutInflater)
     }
+
     private lateinit var nome: String
     private lateinit var email: String
     private lateinit var senha: String
@@ -25,17 +26,16 @@ class CadastroActivity : AppCompatActivity() {
     private val firebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
-
     private val firestore by lazy {
         FirebaseFirestore.getInstance()
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        inicializarToollbar()
+        inicializarToolbar()
         inicializarEventosClique()
+
     }
 
     private fun inicializarEventosClique() {
@@ -44,14 +44,15 @@ class CadastroActivity : AppCompatActivity() {
                 cadastrarUsuario(nome, email, senha)
             }
         }
-
     }
 
     private fun cadastrarUsuario(nome: String, email: String, senha: String) {
+
         firebaseAuth.createUserWithEmailAndPassword(
             email, senha
         ).addOnCompleteListener { resultado ->
             if (resultado.isSuccessful) {
+
                 val idUsuario = resultado.result.user?.uid
                 if (idUsuario != null) {
                     val usuario = Usuario(
@@ -60,29 +61,28 @@ class CadastroActivity : AppCompatActivity() {
                     salvarUsuarioFirestore(usuario)
                 }
 
-
             }
-
-
         }.addOnFailureListener { erro ->
             try {
                 throw erro
             } catch (erroSenhaFraca: FirebaseAuthWeakPasswordException) {
                 erroSenhaFraca.printStackTrace()
-                exibirMensagem("Senha fraca, digite outra com letras, numero e caracteres especiais")
+                exibirMensagem("Senha fraca, digite outra com letras, número e caracteres especiais")
             } catch (erroUsuarioExistente: FirebaseAuthUserCollisionException) {
                 erroUsuarioExistente.printStackTrace()
-                exibirMensagem("E-mail já pertence a outo usuário")
+                exibirMensagem("E-mail já percente a outro usuário")
             } catch (erroCredenciaisInvalidas: FirebaseAuthInvalidCredentialsException) {
                 erroCredenciaisInvalidas.printStackTrace()
                 exibirMensagem("E-mail inválido, digite um outro e-mail")
             }
         }
+
     }
 
     private fun salvarUsuarioFirestore(usuario: Usuario) {
 
-        firestore.collection("usuarios")
+        firestore
+            .collection("usuarios")
             .document(usuario.id)
             .set(usuario)
             .addOnSuccessListener {
@@ -90,12 +90,10 @@ class CadastroActivity : AppCompatActivity() {
                 startActivity(
                     Intent(applicationContext, MainActivity::class.java)
                 )
-
-
             }.addOnFailureListener {
                 exibirMensagem("Erro ao fazer seu cadastro")
-
             }
+
     }
 
     private fun validarCampos(): Boolean {
@@ -103,7 +101,6 @@ class CadastroActivity : AppCompatActivity() {
         nome = binding.editNome.text.toString()
         email = binding.editEmail.text.toString()
         senha = binding.editSenha.text.toString()
-
 
         if (nome.isNotEmpty()) {
 
@@ -115,25 +112,27 @@ class CadastroActivity : AppCompatActivity() {
                     binding.textInputSenha.error = null
                     return true
                 } else {
-                    binding.textInputSenha.error = "Preencha a Senha"
+                    binding.textInputSenha.error = "Preencha a senha"
                     return false
                 }
+
             } else {
                 binding.textInputEmail.error = "Preencha o seu e-mail!"
                 return false
             }
+
         } else {
             binding.textInputNome.error = "Preencha o seu nome!"
             return false
         }
+
     }
 
-
-    private fun inicializarToollbar() {
+    private fun inicializarToolbar() {
         val toolbar = binding.includeToolbar.tbPrincipal
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
-            title = "Faça o seu Cadastro"
+            title = "Faça o seu cadastro"
             setDisplayHomeAsUpEnabled(true)
         }
     }
