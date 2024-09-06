@@ -11,10 +11,11 @@ import com.devjucelio.whatsapp.databinding.ActivityLoginBinding
 import com.devjucelio.whatsapp.databinding.ActivityMainBinding
 import com.devjucelio.whatsapp.utils.exibirMensagem
 
+
 class LoginActivity : AppCompatActivity() {
 
     private val binding by lazy {
-        ActivityLoginBinding.inflate(layoutInflater)
+        ActivityLoginBinding.inflate( layoutInflater )
     }
 
     private lateinit var email: String
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContentView( binding.root )
         inicializarEventosClique()
         //firebaseAuth.signOut()
 
@@ -40,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun verificarUsuarioLogado() {
         val usuarioAtual = firebaseAuth.currentUser
-        if (usuarioAtual != null) {
+        if( usuarioAtual != null ){
             startActivity(
                 Intent(this, MainActivity::class.java)
             )
@@ -54,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
             )
         }
         binding.btnLogar.setOnClickListener {
-            if (validarCampos()) {
+            if( validarCampos() ){
                 logarUsuario()
             }
         }
@@ -74,10 +75,10 @@ class LoginActivity : AppCompatActivity() {
 
             try {
                 throw erro
-            } catch (erroUsuarioInvalido: FirebaseAuthInvalidUserException) {
+            }catch ( erroUsuarioInvalido: FirebaseAuthInvalidUserException){
                 erroUsuarioInvalido.printStackTrace()
                 exibirMensagem("E-mail não cadastrado")
-            } catch (erroCredenciaisInvalidas: FirebaseAuthInvalidCredentialsException) {
+            }catch ( erroCredenciaisInvalidas: FirebaseAuthInvalidCredentialsException){
                 erroCredenciaisInvalidas.printStackTrace()
                 exibirMensagem("E-mail ou senha estão incorretos!")
             }
@@ -91,18 +92,18 @@ class LoginActivity : AppCompatActivity() {
         email = binding.editLoginEmail.text.toString()
         senha = binding.editLoginSenha.text.toString()
 
-        if (email.isNotEmpty()) {//Não está vazio
+        if( email.isNotEmpty() ){//Não está vazio
 
             binding.textInputLayoutLoginEmail.error = null
-            if (senha.isNotEmpty()) {
+            if( senha.isNotEmpty() ){
                 binding.textInputLayoutLoginSenha.error = null
                 return true
-            } else {
+            }else{
                 binding.textInputLayoutLoginSenha.error = "Preencha o e-mail"
                 return false
             }
 
-        } else {//Está vazio
+        }else{//Está vazio
             binding.textInputLayoutLoginEmail.error = "Preencha o e-mail"
             return false
         }
