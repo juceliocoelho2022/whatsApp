@@ -1,13 +1,15 @@
 package com.devjucelio.whatsapp
 
 import android.content.Intent
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.devjucelio.whatsapp.databinding.ActivityLoginBinding
-import com.devjucelio.whatsapp.utils.exibirMensagem
+import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.devjucelio.whatsapp.databinding.ActivityLoginBinding
+import com.devjucelio.whatsapp.databinding.ActivityMainBinding
+import com.devjucelio.whatsapp.utils.exibirMensagem
 
 class LoginActivity : AppCompatActivity() {
 

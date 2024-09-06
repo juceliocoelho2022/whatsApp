@@ -8,13 +8,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuProvider
-import com.devjucelio.whatsapp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.devjucelio.whatsapp.databinding.ActivityCadastroBinding
+import com.devjucelio.whatsapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy {
-        ActivityMainBinding.inflate( layoutInflater )
+        ActivityMainBinding.inflate(layoutInflater)
     }
 
     //Firebase
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView( binding.root )
+        setContentView(binding.root)
         inicializarToolbar()
 
     }
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private fun inicializarToolbar() {
 
         val toolbar = binding.includeMainToolbar.tbPrincipal
-        setSupportActionBar( toolbar )
+        setSupportActionBar(toolbar)
         supportActionBar?.apply {
             title = "WhatsApp"
         }
@@ -45,12 +46,13 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
 
-                    when( menuItem.itemId ){
+                    when (menuItem.itemId) {
                         R.id.item_perfil -> {
                             startActivity(
                                 Intent(applicationContext, PerfilActivity::class.java)
                             )
                         }
+
                         R.id.item_sair -> {
                             deslogarUsuario()
                         }
@@ -68,8 +70,8 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("Deslogar")
             .setMessage("Deseja realmente sair?")
-            .setNegativeButton("Não"){dialog, posicao -> }
-            .setPositiveButton("Sim"){dialog, posicao ->
+            .setNegativeButton("Não") { dialog, posicao -> }
+            .setPositiveButton("Sim") { dialog, posicao ->
                 firebaseAuth.signOut()
                 startActivity(
                     Intent(applicationContext, LoginActivity::class.java)

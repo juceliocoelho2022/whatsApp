@@ -1,21 +1,22 @@
 package com.devjucelio.whatsapp
 
 import android.content.Intent
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.devjucelio.whatsapp.databinding.ActivityCadastroBinding
-import com.devjucelio.whatsapp.model.Usuario
-import com.devjucelio.whatsapp.utils.exibirMensagem
+import android.os.Bundle
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.FirebaseFirestore
+import com.devjucelio.whatsapp.databinding.ActivityCadastroBinding
+import com.devjucelio.whatsapp.model.Usuario
+import com.devjucelio.whatsapp.utils.exibirMensagem
 
 class CadastroActivity : AppCompatActivity() {
 
     private val binding by lazy {
-        ActivityCadastroBinding.inflate(layoutInflater)
+        ActivityCadastroBinding.inflate( layoutInflater )
     }
 
     private lateinit var nome: String
@@ -32,7 +33,7 @@ class CadastroActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContentView( binding.root )
         inicializarToolbar()
         inicializarEventosClique()
 
@@ -40,7 +41,7 @@ class CadastroActivity : AppCompatActivity() {
 
     private fun inicializarEventosClique() {
         binding.btnCadastrar.setOnClickListener {
-            if (validarCampos()) {
+            if( validarCampos() ){
                 cadastrarUsuario(nome, email, senha)
             }
         }
@@ -51,27 +52,27 @@ class CadastroActivity : AppCompatActivity() {
         firebaseAuth.createUserWithEmailAndPassword(
             email, senha
         ).addOnCompleteListener { resultado ->
-            if (resultado.isSuccessful) {
+            if( resultado.isSuccessful ){
 
                 val idUsuario = resultado.result.user?.uid
-                if (idUsuario != null) {
+                if( idUsuario != null ){
                     val usuario = Usuario(
                         idUsuario, nome, email
                     )
-                    salvarUsuarioFirestore(usuario)
+                    salvarUsuarioFirestore( usuario )
                 }
 
             }
         }.addOnFailureListener { erro ->
             try {
                 throw erro
-            } catch (erroSenhaFraca: FirebaseAuthWeakPasswordException) {
+            }catch ( erroSenhaFraca: FirebaseAuthWeakPasswordException ){
                 erroSenhaFraca.printStackTrace()
                 exibirMensagem("Senha fraca, digite outra com letras, número e caracteres especiais")
-            } catch (erroUsuarioExistente: FirebaseAuthUserCollisionException) {
+            }catch ( erroUsuarioExistente: FirebaseAuthUserCollisionException ){
                 erroUsuarioExistente.printStackTrace()
                 exibirMensagem("E-mail já percente a outro usuário")
-            } catch (erroCredenciaisInvalidas: FirebaseAuthInvalidCredentialsException) {
+            }catch ( erroCredenciaisInvalidas: FirebaseAuthInvalidCredentialsException ){
                 erroCredenciaisInvalidas.printStackTrace()
                 exibirMensagem("E-mail inválido, digite um outro e-mail")
             }
@@ -83,8 +84,8 @@ class CadastroActivity : AppCompatActivity() {
 
         firestore
             .collection("usuarios")
-            .document(usuario.id)
-            .set(usuario)
+            .document( usuario.id )
+            .set( usuario )
             .addOnSuccessListener {
                 exibirMensagem("Sucesso ao fazer seu cadastro")
                 startActivity(
@@ -102,26 +103,26 @@ class CadastroActivity : AppCompatActivity() {
         email = binding.editEmail.text.toString()
         senha = binding.editSenha.text.toString()
 
-        if (nome.isNotEmpty()) {
+        if( nome.isNotEmpty() ){
 
             binding.textInputNome.error = null
-            if (email.isNotEmpty()) {
+            if( email.isNotEmpty() ){
 
                 binding.textInputEmail.error = null
-                if (senha.isNotEmpty()) {
+                if( senha.isNotEmpty() ){
                     binding.textInputSenha.error = null
                     return true
-                } else {
+                }else{
                     binding.textInputSenha.error = "Preencha a senha"
                     return false
                 }
 
-            } else {
+            }else{
                 binding.textInputEmail.error = "Preencha o seu e-mail!"
                 return false
             }
 
-        } else {
+        }else{
             binding.textInputNome.error = "Preencha o seu nome!"
             return false
         }
@@ -130,7 +131,7 @@ class CadastroActivity : AppCompatActivity() {
 
     private fun inicializarToolbar() {
         val toolbar = binding.includeToolbar.tbPrincipal
-        setSupportActionBar(toolbar)
+        setSupportActionBar( toolbar )
         supportActionBar?.apply {
             title = "Faça o seu cadastro"
             setDisplayHomeAsUpEnabled(true)
