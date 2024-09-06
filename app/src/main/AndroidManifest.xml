@@ -16,13 +16,13 @@
             android:name=".CadastroActivity"
             android:exported="false" />
         <activity
-            android:name="com.devjucelio.CadastroAcitivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
+            android:name="com.devjucelio.whatsapp.CadastroActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
