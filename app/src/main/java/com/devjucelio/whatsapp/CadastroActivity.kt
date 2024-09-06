@@ -50,19 +50,26 @@ class CadastroActivity : AppCompatActivity() {
                 startActivity(
                     Intent(applicationContext, MainActivity::class.java)
                 )
+
+                //Salvar dados Firestores
+                /*
+                * id, nome, email, foto
+                * */
             }
+
+
         }.addOnFailureListener { erro ->
             try {
                 throw erro
-            } catch (erroCredenciaisInvalidas: FirebaseAuthInvalidCredentialsException) {
-                erroCredenciaisInvalidas.printStackTrace()
-                exibirMensagem("E-mail inválido, digite um outro e-mail")
-            } catch (erroUsuarioExistente: FirebaseAuthUserCollisionException) {
-                erroUsuarioExistente.printStackTrace()
-                exibirMensagem("E-mail já pertence a outo usuário")
             } catch (erroSenhaFraca: FirebaseAuthWeakPasswordException) {
                 erroSenhaFraca.printStackTrace()
                 exibirMensagem("Senha fraca, digite outra com letras, numero e caracteres especiais")
+            } catch (erroUsuarioExistente: FirebaseAuthUserCollisionException) {
+                erroUsuarioExistente.printStackTrace()
+                exibirMensagem("E-mail já pertence a outo usuário")
+            } catch (erroCredenciaisInvalidas: FirebaseAuthInvalidCredentialsException) {
+                erroCredenciaisInvalidas.printStackTrace()
+                exibirMensagem("E-mail inválido, digite um outro e-mail")
             }
         }
     }
